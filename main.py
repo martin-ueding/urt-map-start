@@ -8,31 +8,44 @@ from listui import Ui_Dialog
 import sys
 
 mapnames = []
+mappath = "/home/mu/.q3a/q3ut4/"
 	
 def printRandomMapName ():
 	print random.choice(mapnames)
 
 class MyForm(QtGui.QMainWindow):
-  def __init__(self, parent=None):
-	QtGui.QWidget.__init__(self, parent)
-	self.ui = Ui_Dialog()
-	self.ui.setupUi(self)
-	QtCore.QObject.connect(self.ui.startButton, QtCore.SIGNAL("clicked()"), self.printSelectedMap)
-	maps = glob.glob('/home/mu/.q3a/q3ut4/*.pk3')
-	for map in maps:
-		m = re.search('(?:.*/)+([^/]+)\\.pk3', map)
-		mapnames.append(m.group(1))
+	def __init__(self, parent=None):
+		QtGui.QWidget.__init__(self, parent)
+		self.ui = Ui_Dialog()
+		self.ui.setupUi(self)
+		QtCore.QObject.connect(self.ui.startButton, QtCore.SIGNAL("clicked()"), self.printSelectedMap)
+		QtCore.QObject.connect(self.ui.deleteButton, QtCore.SIGNAL("clicked()"), self.deleteSelectedMap)
+		self.buildList()
+
+	def printSelectedMap (self):
+		row = self.ui.mapList.currentRow()
+		if row != -1:
+			os.system('/opt/UrbanTerror/ioUrbanTerror.i386 +map "'+mapnames[row]+'"')
+
+	def deleteSelectedMap (self):
+		row = self.ui.mapList.currentRow()
+		if row != -1:
+			os.system('mv "'+mappath+mapnames[row]+'.pk3" "'+mappath+mapnames[row]+'.pk3.bak"')
+			mapnames.remove(mapnames[row])
+			self.ui.mapList.takeItem(row)
+
+
+
+	def buildList (self):
+		maps = glob.glob(mappath+'*.pk3')
+		for map in maps:
+			m = re.search('(?:.*/)+([^/]+)\\.pk3', map)
+			mapnames.append(m.group(1))
 	
-	mapnames.sort()
+		mapnames.sort()
 
-	for map in mapnames:
-		self.ui.mapList.addItem(map)
-
-  def printSelectedMap (self):
-	row = self.ui.mapList.currentRow()
-	print mapnames[row]
-
-	os.system('/opt/UrbanTerror/ioUrbanTerror.i386 +map '+mapnames[row])
+		for map in mapnames:
+			self.ui.mapList.addItem(map)
 
 
 if __name__ == "__main__":	
