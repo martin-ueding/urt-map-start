@@ -22,7 +22,11 @@ class MyForm(QtGui.QMainWindow):
 	for map in maps:
 		m = re.search('(?:.*/)+([^/]+)\\.pk3', map)
 		mapnames.append(m.group(1))
-		self.ui.mapList.addItem(m.group(1))
+	
+	mapnames.sort()
+
+	for map in mapnames:
+		self.ui.mapList.addItem(map)
 
   def printSelectedMap (self):
 	row = self.ui.mapList.currentRow()
