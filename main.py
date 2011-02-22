@@ -1,4 +1,6 @@
 #!/usr/bin/python
+# Copyright (c) 2011 Martin Ueding <dev@martin-ueding.de>
+
 import glob
 import re
 import os
