@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Copyright (c) 2011 Martin Ueding <dev@martin-ueding.de>
+# Copyright (c) 2011-2012 Martin Ueding <dev@martin-ueding.de>
 
 import glob
 import re
@@ -27,7 +27,7 @@ class MyForm(QtGui.QMainWindow):
 	def printSelectedMap (self):
 		row = self.ui.mapList.currentRow()
 		if row != -1:
-			os.system('/opt/UrbanTerror/ioUrbanTerror.i386 +map "'+mapnames[row]+'"')
+			os.system('/opt/UrbanTerror/ioUrbanTerror.x86_64 +map "'+mapnames[row]+'"')
 
 	def deleteSelectedMap (self):
 		row = self.ui.mapList.currentRow()
